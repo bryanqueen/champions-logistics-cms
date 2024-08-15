@@ -1,100 +1,64 @@
-
+const mongoose = require('mongoose');
 const Homepage = require('../models/Homepage');
 
-
 const homePageController = {
-    createHomePageContent: async (req, res) => {
-        try {
-          const {
-            header1,
-            descriptionText1,
-            bannerImage,
-            header2,
-            subHeader2,
-            descriptionText2,
-            imageOneForAbout,
-            imageTwoForAbout,
-            imageThreeForAbout,
-            imageFourForAbout,
-            imageFiveForAbout,
-            subContentsForAbout,
-            header3,
-            subHeader3,
-            descriptionText3,
-            imageOneForServices,
-            imageTwoForServices,
-            imageThreeForServices,
-            keyPointsForImageOneInServicesSection,
-            keyPointsForImageTwoInServicesSection,
-            keyPointsForImageThreeInServicesSection,
-            faqsQuestions,
-            faqsAnswers,
-          } = req.body;
-    
-
-    
-          const homePageContent = new Homepage({
-            header1,
-            descriptionText1,
-            bannerImage,
-            header2,
-            subHeader2,
-            descriptionText2,
-            imageOneForAbout,
-            imageTwoForAbout,
-            imageThreeForAbout,
-            imageFourForAbout,
-            imageFiveForAbout,
-            subContentsForAbout: Array.isArray(subContentsForAbout) ? subContentsForAbout : [subContentsForAbout],
-            header3,
-            subHeader3,
-            descriptionText3,
-            imageOneForServices,
-            imageTwoForServices,
-            imageThreeForServices,
-            keyPointsForImageOneInServicesSection: Array.isArray(keyPointsForImageOneInServicesSection) ? keyPointsForImageOneInServicesSection : [keyPointsForImageOneInServicesSection],
-            keyPointsForImageTwoInServicesSection: Array.isArray(keyPointsForImageTwoInServicesSection) ? keyPointsForImageTwoInServicesSection : [keyPointsForImageTwoInServicesSection],
-            keyPointsForImageThreeInServicesSection: Array.isArray(keyPointsForImageThreeInServicesSection) ? keyPointsForImageThreeInServicesSection : [keyPointsForImageThreeInServicesSection],
-            faqsQuestions: Array.isArray(faqsQuestions) ? faqsQuestions : [faqsQuestions],
-            faqsAnswers: Array.isArray(faqsAnswers) ? faqsAnswers : [faqsAnswers],
-          });
-    
-          await homePageContent.save();
-          res.json({ message: 'Home Page Content created successfully', homePageContent });
-        } catch (error) {
-          console.error('Error creating home page content:', error);
-          return res.status(500).json({ error: error.message });
-        }
-      },
-
-        // Update Home Page Content
-  updateHomePageContent: async (req, res) => {
+  createHomePageContent: async (req, res) => {
     try {
       const {
         header1,
-        subHeader1,
         descriptionText1,
         bannerImage,
         header2,
         subHeader2,
         descriptionText2,
-        imageOneForAbout,
-        imageTwoForAbout,
-        imageThreeForAbout,
-        imageFourForAbout,
-        imageFiveForAbout,
-        subContentsForAbout,
+        aboutImageText, // Array of objects for about images and text
         header3,
         subHeader3,
         descriptionText3,
-        imageOneForServices,
-        imageTwoForServices,
-        imageThreeForServices,
-        keyPointsForImageOneInServicesSection,
-        keyPointsForImageTwoInServicesSection,
-        keyPointsForImageThreeInServicesSection,
-        faqsQuestions,
-        faqsAnswers,
+        serviceImageText, // Array of objects for service images and points
+        faqs, // Array of FAQ objects
+      } = req.body;
+
+      // Create a new homepage content document
+      const homePageContent = new Homepage({
+        header1,
+        descriptionText1,
+        bannerImage,
+        header2,
+        subHeader2,
+        descriptionText2,
+        aboutImageText: Array.isArray(aboutImageText) ? aboutImageText : [aboutImageText],
+        header3,
+        subHeader3,
+        descriptionText3,
+        serviceImageText: Array.isArray(serviceImageText) ? serviceImageText : [serviceImageText],
+        faqs: Array.isArray(faqs) ? faqs : [faqs],
+      });
+
+      await homePageContent.save();
+
+      res.json({ message: 'Home Page Content created successfully', homePageContent });
+    } catch (error) {
+      console.error('Error creating home page content:', error);
+      return res.status(500).json({ error: error.message });
+    }
+  },
+
+  updateHomePageContent: async (req, res) => {
+    try {
+      const {
+        header1,
+        descriptionText1,
+        bannerImage,
+        header2,
+        subHeader2,
+        descriptionText2,
+        aboutImageText,
+        header3,
+        subHeader3,
+        descriptionText3,
+        serviceImageText,
+        faqs,
       } = req.body;
 
       // Update the single Homepage document
@@ -102,29 +66,17 @@ const homePageController = {
         {}, // Empty query to find the first document
         {
           header1,
-          subHeader1,
           descriptionText1,
           bannerImage,
           header2,
           subHeader2,
           descriptionText2,
-          imageOneForAbout,
-          imageTwoForAbout,
-          imageThreeForAbout,
-          imageFourForAbout,
-          imageFiveForAbout,
-          subContentsForAbout: Array.isArray(subContentsForAbout) ? subContentsForAbout : [subContentsForAbout],
+          aboutImageText: Array.isArray(aboutImageText) ? aboutImageText : [aboutImageText],
           header3,
           subHeader3,
           descriptionText3,
-          imageOneForServices,
-          imageTwoForServices,
-          imageThreeForServices,
-          keyPointsForImageOneInServicesSection: Array.isArray(keyPointsForImageOneInServicesSection) ? keyPointsForImageOneInServicesSection : [keyPointsForImageOneInServicesSection],
-          keyPointsForImageTwoInServicesSection: Array.isArray(keyPointsForImageTwoInServicesSection) ? keyPointsForImageTwoInServicesSection : [keyPointsForImageTwoInServicesSection],
-          keyPointsForImageThreeInServicesSection: Array.isArray(keyPointsForImageThreeInServicesSection) ? keyPointsForImageThreeInServicesSection : [keyPointsForImageThreeInServicesSection],
-          faqsQuestions: Array.isArray(faqsQuestions) ? faqsQuestions : [faqsQuestions],
-          faqsAnswers: Array.isArray(faqsAnswers) ? faqsAnswers : [faqsAnswers],
+          serviceImageText: Array.isArray(serviceImageText) ? serviceImageText : [serviceImageText],
+          faqs: Array.isArray(faqs) ? faqs : [faqs],
         },
         { new: true } // Return the updated document
       );
@@ -140,7 +92,6 @@ const homePageController = {
     }
   },
 
-  // Get Home Page Content
   getHomePageContent: async (req, res) => {
     try {
       const homePageContent = await Homepage.findOne();
@@ -154,6 +105,7 @@ const homePageController = {
       console.error('Error retrieving home page content:', error);
       return res.status(500).json({ error: error.message });
     }
-  }
-}
+  },
+};
+
 module.exports = homePageController;

@@ -5,9 +5,6 @@ const homePageSchema = new Schema({
     header1: {
         type: String
     },
-    subHeader1: {
-        type: String
-    },
     descriptionText1: {
         type: String
     },
@@ -23,23 +20,9 @@ const homePageSchema = new Schema({
     descriptionText2: {
         type: String
     },
-    imageOneForAbout: {
-        type: String
-    },
-    imageTwoForAbout: {
-        type: String
-    },
-    imageThreeForAbout: {
-        type: String
-    },
-    imageFourForAbout: {
-        type: String
-    },
-    imageFiveForAbout: {
-        type: String
-    },
-    subContentsForAbout: [{
-        type: String
+    aboutImageText: [{
+        image: String,
+        content: String
     }],
     header3: {
         type: String
@@ -50,29 +33,15 @@ const homePageSchema = new Schema({
     descriptionText3: {
         type: String
     },
-    imageOneForServices: {
-        type: String
-    },
-    imageTwoForServices: {
-        type: String
-    },
-    imageThreeForServices: {
-        type: String
-    },
-    keyPointsForImageOneInServicesSection: [{
-        type: String
+    serviceImageText: [{
+        image: String,
+        pointOne: String,
+        pointTwo: String
     }],
-    keyPointsForImageTwoInServicesSection: [{
-        type: String
+    faqs: [{
+       content: String,
+       subContent: String
     }],
-    keyPointsForImageThreeInServicesSection: [{
-        type: String
-    }],
-    faqsQuestions: [{
-        type: String
-    }],
-    faqsAnswers: [{
-        type: String
-    }]
+
 });
 module.exports = Homepage = model('Homepage', homePageSchema);

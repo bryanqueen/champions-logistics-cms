@@ -3,7 +3,10 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const port = process.env.PORT || 1080
 require('dotenv').config();
-const homePageCmsRoute = require('./routes/homePageRoute')
+const homePageCmsRoute = require('./routes/homePageRoute');
+const servicePageCmsRoute = require('./routes/servicePageRoutes');
+const contactPageCmsRoute = require('./routes/contactPageRoutes');
+const aboutPageCmsRoute = require('./routes/aboutPageRoutes')
 
 
 //Initialize App
@@ -30,7 +33,10 @@ app.get('/', (req, res) => {
 })
 
 //API Routes Middlewares
-app.use('/homepage', homePageCmsRoute)
+app.use('/homepage', homePageCmsRoute);
+app.use('/servicepage', servicePageCmsRoute);
+app.use('/contactpage', contactPageCmsRoute);
+app.use('/aboutpage', aboutPageCmsRoute);
 
 
 //Establish Database Connection before listening to port
