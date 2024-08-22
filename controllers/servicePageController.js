@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+
 const Servicepage = require('../models/Servicepage');
 const Service = require('../models/Service');
 
@@ -85,7 +85,20 @@ const servicePageController = {
 
       await newService.save();
 
-      res.json({ message: 'Service created successfully', newService });
+
+ // Update the ServicePage document, or create a new one if it doesn't exist
+ const updatedServicePage = await Servicepage.findOneAndUpdate(
+  {}, // Empty filter to find any document
+  {
+    $push: { services: newService._id }, // Add the new service ID to the services array
+  },
+  {
+    new: true, // Return the updated document
+    upsert: true // Create a new document if one doesn't exist
+  }
+)
+
+      res.json({ newService, updatedServicePage });
     } catch (error) {
       console.error('Error creating service:', error);
       return res.status(500).json({ error: error.message });
